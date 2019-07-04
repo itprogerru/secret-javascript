@@ -225,3 +225,4 @@ const capitalizeWords = (str) => str.split(' ').map(word => `${word[0].toUpperCa
 const getRandomInt = (min,max) => Math.round(Math.random()*(max-min) + min);
 const getRandomDecimal = (min,max) => Math.random()*(max-min) + min;
 
+// 26. memoization  Сапозапониманющие функции
