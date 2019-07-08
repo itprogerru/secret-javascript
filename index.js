@@ -156,7 +156,7 @@ const res150 = people.reduce((acc, value, index) => {if (value === 'jouen') acc.
 const res151 = findIndexAll(people, 'jouen'); // [0,3]
 
 
-// 16. Make Range of Numbers within Array
+// 16. Make Range of Numbers within Array создание массива случайными данными
 var range = Array.from({length: 2}, (value, index)=> index +1); // [1,2,3] заполнения масива числами
 
 
