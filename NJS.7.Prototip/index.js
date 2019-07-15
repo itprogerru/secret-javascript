@@ -45,3 +45,52 @@ console.assert(igor instanceof Person, "наследуюет прототип о
 console.assert(igor instanceof Object, "наследуюет прототип от Object" );
 console.assert(typeof igor.age === "function", "есть функция age" );
 
+
+
+//Статистические методы в es6
+
+class NinjsClass {
+  constructor (name,level) {
+    this.name = name;
+    this.level= level;
+  }
+  swingSword() {
+    return true;
+  }
+
+  static compare(ninja1,ninjs2) {
+    return ninja1.level - ninjs2.level;
+  }
+}
+
+const ninja1 = new NinjsClass("Youshi", 4);
+const ninja2 = new NinjsClass("Hatori", 3);
+
+console.assert(!("compare" in ninja1) && !("compare" in ninja2), "A ninja instance doesnt know hot to compare");
+console.assert(NinjsClass.compare(ninja1,ninja2)>0, "Класс имеет внутренее свойство compare");
+console.assert(!("swingSword" in NinjsClass), "Клсаа не имеет данного свойства");
+
+//Преобразовать код
+
+class Warrior {
+  constructor (weapon) {
+    this.weapon = weapon;
+  }
+  wield() {
+    return "Wielding" + this.weapon
+  }
+  static duel (war1, war2) {
+    return war1.wield() +" "+ war2.wield();
+  }
+}
+
+function Warrior (weapon) {
+  this.weapon = weapon;
+  Warrior.prototype.wield = function() {
+    return "Wielding" + this.weapon
+  }
+  Warrior.duel = function (war1, war2) {
+    return war1.wield() +" "+ war2.wield();
+  }
+
+}
