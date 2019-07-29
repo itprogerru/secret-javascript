@@ -135,3 +135,25 @@ var reduce = function(arr, callback, startValue) {
   }
   return result;
 };
+
+/**
+ * Функция дебаунс
+ * @param fn
+ * @param time
+ * @return {Function}
+ */
+function deb (fn, time) {
+  let timer;
+
+  return function (...args) {
+    const onComplete = () => {
+      fn.apply(args)
+      time = null;
+    }
+
+    if (timer) {
+      clearTimeout(time)
+    }
+    timer = setTimeout(onComplete, time)
+  }
+}

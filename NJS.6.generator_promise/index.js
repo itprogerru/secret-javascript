@@ -175,3 +175,96 @@ function async (generator) {
     iterator.throw(e);
   }
 }
+
+function promiseAll (promises) {
+  return new Promise((resolve,reject) => {
+    const result = [];
+    let complete = 0;
+    promises.forEach(promise => {
+      Promise.resolve(promise).then(response => {
+        complete++;
+        result[complete] = response;
+        if (complete === promises.length) {
+          resolve(result)
+        }
+      }).catch(error => reject(error))
+    })
+  })
+}
+
+const rPromiseAll = (promises) => {
+}
+
+const all = (...promises) => {
+  const results = [];
+  const merged = promises.reduce((acc, promise) => acc.then(() => promise).then(response => results.push(response)),Promise.resolve(null))
+  return merged.then(()=> results);
+}
+
+
+Promise.all([
+  fetch('/api/a'),
+  fetch('/api/b'),
+  fetch('/api/c')
+]).then([responseA, responseB, responseC] => {
+  // Use the responses from all three async requests.
+});
+
+/**
+ * Итеративный метод
+ * @param values
+ * @return {Promise<[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]>}
+ */
+Promise.all = function promiseAllIterative(values) {
+  return new Promise((resolve, reject) => {
+    let results = [];
+    let completed = 0;
+
+    values.forEach((value, index) => {
+      Promise.resolve(value).then(result => {
+        results[index] = result;
+        completed += 1;
+
+        if (completed === values.length) {
+          resolve(results);
+        }
+      }).catch(err => reject(err));
+    });
+  });
+}
+
+/**
+ * Рекурсивный метод
+ * @param values
+ * @return {Promise<Array>|Promise<any[] | Array>}
+ */
+Promise.all = function promiseAllRecursive(values) {
+  // Base case.
+  if (values.length === 0) {
+    return Promise.resolve([]);
+  }
+
+  const [first, ...rest] = values;
+
+  // Calling Promise.resolve on the first value because it could
+  // be either a Promise or an actual value.
+  return Promise.resolve(first).then(firstResult => {
+    return promiseAllRecursive(rest).then(restResults => {
+      return [firstResult, ...restResults];
+    });
+  });
+}
+/**
+ * Reducer Solution
+ * @param values
+ * @return {*}
+ */
+Promise.all = function promiseAllReduce(values) {
+  return values.reduce((accumulator, value) => {
+    return accumulator.then(results => {
+      return Promise.resolve(value).then(result => {
+        return [...results, result];
+      });
+    });
+  }, Promise.resolve([]));
+}
